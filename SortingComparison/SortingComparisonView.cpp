@@ -32,6 +32,7 @@ END_MESSAGE_MAP()
 
 CSortingComparisonView::CSortingComparisonView() noexcept
 {
+	currentArraySize = 0;
 	noLines = 0;
 	namesPosition = 0;
 	linesPosition = 0;
@@ -117,11 +118,12 @@ CSortingComparisonDoc* CSortingComparisonView::GetDocument() const // non-debug 
 void CSortingComparisonView::OnSortProperties()
 {
 	SortDlg sDlg;
-	if (sDlg.DoModal() != IDOK)return;
+	if (sDlg.DoModal() != IDOK) return;
 
 	ResetTimes();
+	currentArraySize = sDlg.getArraySize();
 
-	SortAlgs sortAlgs(sDlg.getArraySize());
+	SortAlgs sortAlgs(currentArraySize);
 
 	if (sDlg.getInfoSelection())
 	{
@@ -216,7 +218,6 @@ void CSortingComparisonView::DrawBackground(CDC* pDC)
 	pDC->LineTo(MARGIN, m_pClientRect->bottom - MARGIN);
 	pDC->LineTo(m_pClientRect->right - MARGIN, m_pClientRect->bottom - MARGIN);
 
-
 	// drawing sort names
 	namesPosition = (m_pClientRect->right - 2 * MARGIN) / NO_SORTS;
 
@@ -257,7 +258,10 @@ void CSortingComparisonView::DrawDiagram(CDC* pDC)
 	timeStr.Format(L"%.4f", 0.0);
 	pDC->TextOutW(5, m_pClientRect->bottom - MARGIN - 12, timeStr);
 
-
+	// drawing array size
+	CString arrSizeText;
+	arrSizeText.Format(L"Array size: %d", currentArraySize);
+	pDC->TextOutW(MARGIN, MARGIN / 3, arrSizeText);
 
 
 	// drawing value rectangles

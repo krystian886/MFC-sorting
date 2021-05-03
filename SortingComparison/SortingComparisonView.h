@@ -64,6 +64,7 @@ private:
 	void ResetTimes();
 
 private:
+	int currentArraySize;
 	int noLines;
 	int namesPosition;
 	double linesPosition;
